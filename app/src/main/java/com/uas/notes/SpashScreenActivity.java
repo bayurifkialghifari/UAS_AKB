@@ -21,13 +21,11 @@ public class SpashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spash_screen);
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                // Intent is used to switch from one activity to another.
-                Intent i = new Intent(SpashScreenActivity.this, LoginActivity.class);
-                startActivity(i); // invoke the SecondActivity.
-                finish(); // the current activity will get finished.
-            }
+        new Handler().postDelayed(() -> {
+            // Intent is used to switch from one activity to another.
+            Intent i = new Intent(SpashScreenActivity.this, LoginActivity.class);
+            startActivity(i); // invoke the SecondActivity.
+            finish(); // the current activity will get finished.
         }, 1500);
 
     }
