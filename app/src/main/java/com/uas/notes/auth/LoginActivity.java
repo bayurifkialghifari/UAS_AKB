@@ -50,6 +50,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Btn on click action
         bSignup.setOnClickListener(this);
         bSignin.setOnClickListener(this);
+
+        // Check if user is logged in
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Toast.makeText(LoginActivity.this, "Already logged in",
+                    Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
     // On click action override
