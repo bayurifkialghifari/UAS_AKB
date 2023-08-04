@@ -85,6 +85,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             fPassword.setError(null);
         }
 
+        // Min 6
+        if(fPassword.getText().toString().length() < 6) {
+            Toast.makeText(RegisterActivity.this, "Password min 6 character",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        // Must contain @
+        if(!fEmail.getText().toString().contains("@")) {
+            Toast.makeText(RegisterActivity.this, "Email does not comply with the conditions",
+                    Toast.LENGTH_SHORT).show();
+        }
+
         return result;
     }
 
