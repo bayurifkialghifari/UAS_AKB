@@ -39,4 +39,12 @@ public class DBHelper {
                 .child(category)
                 .removeValue();
     }
+
+    public static void deleteNote(DatabaseReference DB, String userId, String category, String title) {
+        DB.child("notes")
+                .child(userId)
+                .child(category)
+                .child(title)
+                .removeValue();
+    }
 }
