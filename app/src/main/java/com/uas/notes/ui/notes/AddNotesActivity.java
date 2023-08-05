@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ public class AddNotesActivity extends AppCompatActivity {
     private EditText fNote;
     private Button bSave;
     private Button bBack;
+    private String previousActivity;
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,10 @@ public class AddNotesActivity extends AppCompatActivity {
 
         DB = FirebaseDatabase.getInstance(Config.getDB_URL()).getReference();
         Auth = FirebaseAuth.getInstance();
+
+        Intent i = getIntent();
+        this.previousActivity = i.getStringExtra("backTo");
+        this.category = i.getStringExtra("category");
 
         // Set component
         fTitle = findViewById(R.id.add_note_title);
@@ -59,12 +66,20 @@ public class AddNotesActivity extends AppCompatActivity {
             Toast.makeText(AddNotesActivity.this, "Data created !",
                     Toast.LENGTH_SHORT).show();
 
-            goToMainActivity();
+            if(this.previousActivity.compareTo("note_category") == 0) {
+                goToMainActivity();
+            } else {
+                goToNoteDetail(this.category);
+            }
         });
 
         // Back button on click
         bBack.setOnClickListener(v -> {
-            goToMainActivity();
+            if(this.previousActivity.compareTo("note_category") == 0) {
+                goToMainActivity();
+            } else {
+                goToNoteDetail(this.category);
+            }
         });
     }
 
@@ -74,4 +89,13 @@ public class AddNotesActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void goToNoteDetail(String category) {
+        Intent intent = new Intent(AddNotesActivity.this, DetailNotesActivity.class);
+        intent.putExtra("category", category);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
 }

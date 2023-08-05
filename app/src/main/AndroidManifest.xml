@@ -38,6 +38,9 @@
             android:exported="false"
             android:label="Create New Note" />
         <activity
+            android:name=".ui.notes.DetailNotesActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name" />

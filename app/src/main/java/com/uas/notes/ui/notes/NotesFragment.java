@@ -57,6 +57,7 @@ public class NotesFragment extends Fragment {
         // Move to add note activity
         bAdd.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddNotesActivity.class);
+            intent.putExtra("backTo", "note_category");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             getActivity().startActivity(intent);
             getActivity().finish();

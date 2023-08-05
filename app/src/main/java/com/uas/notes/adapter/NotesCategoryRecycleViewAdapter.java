@@ -7,6 +7,7 @@ package com.uas.notes.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.uas.notes.Config;
 import com.uas.notes.R;
 import com.uas.notes.helper.DBHelper;
 import com.uas.notes.model.NoteCategory;
+import com.uas.notes.ui.notes.DetailNotesActivity;
 
 import java.util.ArrayList;
 
@@ -49,8 +51,10 @@ public class NotesCategoryRecycleViewAdapter extends RecyclerView.Adapter<NotesC
 
         // View on click redirect
         holder.lNoteCategory.setOnClickListener(v -> {
-            Toast.makeText(ctx, "View",
-                    Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ctx, DetailNotesActivity.class);
+            // Pass the category
+            intent.putExtra("category", list_category.get(position).title);
+            ctx.startActivity(intent);
         });
 
         // Delete button onclick
