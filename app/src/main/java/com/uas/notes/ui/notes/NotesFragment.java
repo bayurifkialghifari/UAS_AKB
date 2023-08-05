@@ -49,7 +49,6 @@ public class NotesFragment extends Fragment {
         View root = binding.getRoot();
 
         Auth = FirebaseAuth.getInstance();
-        listCategory = new ArrayList<>();
 
         // Set component
         recyclerView = root.findViewById(R.id.recycle_note);
@@ -68,6 +67,8 @@ public class NotesFragment extends Fragment {
         DB.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                listCategory = new ArrayList<>();
+
                 for (DataSnapshot categorySnapshot: dataSnapshot.getChildren()) {
                     long total = categorySnapshot.getChildrenCount();
 

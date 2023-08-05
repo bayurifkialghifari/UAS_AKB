@@ -5,6 +5,7 @@
  */
 package com.uas.notes.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.uas.notes.Config;
 import com.uas.notes.R;
-import com.uas.notes.auth.LoginActivity;
+import com.uas.notes.helper.DBHelper;
 import com.uas.notes.model.NoteCategory;
 
 import java.util.ArrayList;
@@ -27,6 +32,8 @@ public class NotesCategoryRecycleViewAdapter extends RecyclerView.Adapter<NotesC
 
     private Context ctx;
     private ArrayList<NoteCategory> list_category;
+    private DatabaseReference DB;
+    private FirebaseAuth Auth;
 
     public NotesCategoryRecycleViewAdapter(Context context, ArrayList<NoteCategory> list_category) {
         this.ctx = context;
@@ -35,6 +42,8 @@ public class NotesCategoryRecycleViewAdapter extends RecyclerView.Adapter<NotesC
 
     @Override
     public void onBindViewHolder(@NonNull NotesCategoryRecycleViewAdapter.MyViewHolder holder, int position) {
+        DB = FirebaseDatabase.getInstance(Config.getDB_URL()).getReference();
+        Auth = FirebaseAuth.getInstance();
         holder.fNoteCategoryTitle.setText(list_category.get(position).title);
         holder.fNoteCategoryTotal.setText(list_category.get(position).total + " Notes");
 
@@ -46,8 +55,23 @@ public class NotesCategoryRecycleViewAdapter extends RecyclerView.Adapter<NotesC
 
         // Delete button onclick
         holder.bNoteCategoryDelete.setOnClickListener(v -> {
-            Toast.makeText(ctx, "DElete",
-                    Toast.LENGTH_SHORT).show();
+            // Alert notification
+            AlertDialog.Builder alert = new AlertDialog.Builder(ctx);
+            alert.setTitle("Delete");
+            alert.setMessage("Doing so will permanently delete the data at with this category, including all nested data");
+            alert.setPositiveButton("Sure", (dialog, which) -> {
+                // Delete data
+                DBHelper.deleteNoteCategory(DB, Auth.getUid(), list_category.get(position).title);
+
+                Toast.makeText(ctx, "Delete data success !!",
+                        Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+            });
+
+            alert.setNegativeButton("Nope", (dialog, which) -> dialog.dismiss());
+
+            alert.show();
         });
     }
 

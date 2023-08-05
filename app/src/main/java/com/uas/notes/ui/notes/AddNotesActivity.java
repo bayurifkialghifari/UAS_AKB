@@ -58,14 +58,20 @@ public class AddNotesActivity extends AppCompatActivity {
             // Make alert
             Toast.makeText(AddNotesActivity.this, "Data created !",
                     Toast.LENGTH_SHORT).show();
+
+            goToMainActivity();
         });
 
         // Back button on click
         bBack.setOnClickListener(v -> {
-            Intent intent = new Intent(AddNotesActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            goToMainActivity();
         });
+    }
+
+    public void goToMainActivity() {
+        Intent intent = new Intent(AddNotesActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

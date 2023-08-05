@@ -33,4 +33,10 @@ public class DBHelper {
                 .setValue(notes);
     }
 
+    public static void deleteNoteCategory(DatabaseReference DB, String userId, String category) {
+        DB.child("notes")
+                .child(userId)
+                .child(category)
+                .removeValue();
+    }
 }
