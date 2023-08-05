@@ -15,7 +15,9 @@ public class DBHelper {
     public static void saveUser(DatabaseReference DB, String userId, String name, String email) {
         User user = new User(name, email);
 
-        DB.child("users").child(userId).setValue(user);
+        DB.child("users")
+                .child(userId)
+                .setValue(user);
     }
 
     public static void saveNotes(DatabaseReference DB, String userId, String title, String category, String note) {
@@ -24,7 +26,11 @@ public class DBHelper {
 
         Note notes = new Note(userId, title, note, category, now, now);
 
-        DB.child(userId).setValue(notes);
+        DB.child("notes")
+                .child(userId)
+                .child(category)
+                .child(title)
+                .setValue(notes);
     }
 
 }

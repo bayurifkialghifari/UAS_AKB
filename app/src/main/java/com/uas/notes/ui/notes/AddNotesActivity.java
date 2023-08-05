@@ -37,7 +37,7 @@ public class AddNotesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_notes);
 
-        DB = FirebaseDatabase.getInstance(Config.getDB_URL()).getReference("notes");
+        DB = FirebaseDatabase.getInstance(Config.getDB_URL()).getReference();
         Auth = FirebaseAuth.getInstance();
 
         // Set component
