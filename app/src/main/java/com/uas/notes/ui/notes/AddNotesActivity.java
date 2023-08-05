@@ -53,6 +53,9 @@ public class AddNotesActivity extends AppCompatActivity {
         bSave = findViewById(R.id.add_note_save_btn);
         bBack = findViewById(R.id.add_note_back_btn);
 
+        // Set category
+        fCategory.setText(this.category);
+
         // Save button on click
         bSave.setOnClickListener(v -> {
             DBHelper.saveNotes(DB,
