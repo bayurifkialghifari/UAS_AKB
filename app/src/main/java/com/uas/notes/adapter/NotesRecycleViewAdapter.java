@@ -2,6 +2,7 @@ package com.uas.notes.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.uas.notes.Config;
 import com.uas.notes.R;
 import com.uas.notes.helper.DBHelper;
 import com.uas.notes.model.Note;
+import com.uas.notes.ui.notes.UpdateNotesActivity;
 
 import java.util.ArrayList;
 
@@ -63,6 +65,19 @@ public class NotesRecycleViewAdapter extends RecyclerView.Adapter<NotesRecycleVi
             alert.setNegativeButton("Nope", (dialog, which) -> dialog.dismiss());
 
             alert.show();
+        });
+
+        // Update button onclick
+        holder.bUpdate.setOnClickListener(v -> {
+            // Move activity
+            Intent intent = new Intent(ctx, UpdateNotesActivity.class);
+            // Pass the data
+            intent.putExtra("userId", Auth.getUid());
+            intent.putExtra("title", list_note.get(position).title);
+            intent.putExtra("category", list_note.get(position).category);
+            intent.putExtra("description", list_note.get(position).description);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ctx.startActivity(intent);
         });
     }
 

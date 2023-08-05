@@ -16,6 +16,9 @@
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.notes.UpdateNotesActivity"
+            android:exported="false" />
+        <activity
             android:name=".SpashScreenActivity"
             android:exported="true"
             android:label="@string/app_name">
