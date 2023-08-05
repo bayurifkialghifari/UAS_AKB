@@ -1,3 +1,8 @@
+/**
+ * NIM : 10120003
+ * NAMA : BAYU RIFKI ALGHIFARI
+ * KELAS : IF-1
+ */
 package com.uas.notes.adapter;
 
 import androidx.annotation.NonNull;

@@ -19,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.uas.notes.Config;
 import com.uas.notes.MainActivity;
 import com.uas.notes.R;
-import com.uas.notes.auth.LoginActivity;
 import com.uas.notes.helper.DBHelper;
 
 public class AddNotesActivity extends AppCompatActivity {
