@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.uas.notes.Config;
 import com.uas.notes.R;
 import com.uas.notes.helper.DBHelper;
 import com.uas.notes.helper.StringHelper;
@@ -37,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
         // Create instance firebase
-        DB = FirebaseDatabase.getInstance().getReference();
+        DB = FirebaseDatabase.getInstance(Config.getDB_URL()).getReference();
         Auth = FirebaseAuth.getInstance();
 
         // Set component

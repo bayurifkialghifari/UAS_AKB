@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.uas.notes.Config;
 import com.uas.notes.MainActivity;
 import com.uas.notes.R;
 import com.uas.notes.helper.DBHelper;
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         // Create instance firebase
-        DB = FirebaseDatabase.getInstance().getReference();
+        DB = FirebaseDatabase.getInstance(Config.getDB_URL()).getReference();
         Auth = FirebaseAuth.getInstance();
 
         // Set component
@@ -52,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         bSignin.setOnClickListener(this);
 
         // Check if user is logged in
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (Auth.getCurrentUser() != null) {
             Toast.makeText(LoginActivity.this, "Already logged in",
                     Toast.LENGTH_SHORT).show();
 

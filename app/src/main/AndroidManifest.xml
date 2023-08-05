@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
-
         <activity
             android:name=".SpashScreenActivity"
             android:exported="true"
@@ -25,17 +25,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".auth.LoginActivity"
             android:exported="false"
             android:label="LOGIN" />
-
         <activity
             android:name=".auth.RegisterActivity"
             android:exported="false"
             android:label="REGISTER" />
-
+        <activity
+            android:name=".ui.notes.AddNotesActivity"
+            android:exported="false"
+            android:label="Create New Note" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
