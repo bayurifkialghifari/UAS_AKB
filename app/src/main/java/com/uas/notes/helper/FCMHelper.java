@@ -6,6 +6,7 @@
 package com.uas.notes.helper;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.uas.notes.Config;
@@ -45,34 +46,42 @@ public class FCMHelper {
     }
 
     public static void sendNotifNewNote(String token, String title, String category) {
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-        JSONObject jsonNotif = new JSONObject();
-        JSONObject wholeObj = new JSONObject();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                OkHttpClient client = new OkHttpClient();
+                MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+                JSONObject jsonNotif = new JSONObject();
+                JSONObject wholeObj = new JSONObject();
 
-        try {
-            jsonNotif.put("title", "New note " + title);
-            jsonNotif.put("body", "Category " + category + " with title " + title);
-            wholeObj.put("to", token);
-            wholeObj.put("notification", jsonNotif);
+                try {
+                    jsonNotif.put("title", "New note " + title);
+                    jsonNotif.put("body", "Category " + category + " with title " + title);
+                    wholeObj.put("to", token);
+                    wholeObj.put("notification", jsonNotif);
 
-        } catch (JSONException e) {
-            Log.d("FCM ERROR", e.toString());
-        }
+                } catch (JSONException e) {
+                    Log.d("FCM ERROR", e.toString());
+                }
 
-        RequestBody rBody = RequestBody.create(wholeObj.toString(), mediaType);
-        Request request = new Request.Builder()
-                .url(FCM_MESSAGE_URL)
-                .post(rBody)
-                .addHeader("Authorization", "key=" + Config.getFCM_SERVER_KEY())
-                .addHeader("Content-Type", "application/json")
-                .build();
+                RequestBody rBody = RequestBody.create(wholeObj.toString(), mediaType);
+                Request request = new Request.Builder()
+                        .url(FCM_MESSAGE_URL)
+                        .post(rBody)
+                        .addHeader("Authorization", "key=" + Config.getFCM_SERVER_KEY())
+                        .addHeader("Content-Type", "application/json")
+                        .build();
 
-        try {
-            Response response = client.newCall(request).execute();
-        } catch (IOException e) {
-            Log.d("FCM ERROR", e.toString());
-        }
+                try {
+                    Response response = client.newCall(request).execute();
 
+                    Log.d("GGWP", response.toString());
+                } catch (IOException e) {
+                    Log.d("FCM ERROR", e.toString());
+                }
+
+                return null;
+            }
+        }.execute();
     }
 }
