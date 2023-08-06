@@ -1,12 +1,32 @@
+/**
+ * NIM : 10120003
+ * NAMA : BAYU RIFKI ALGHIFARI
+ * KELAS : IF-1
+ */
 package com.uas.notes.helper;
 
 import android.content.Context;
 import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.uas.notes.Config;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class FCMHelper {
 
     public static String token = "keren";
+    public static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
+
+
     public static String getToken(Context ctx) {
         String TAG = "GGWP";
 
@@ -19,15 +39,40 @@ public class FCMHelper {
 
                     // Get new FCM registration token
                     token = task.getResult();
-
-                    // Log and toast
-                    Log.d(TAG, token);
                 });
 
         return token;
     }
 
-    public static void sendNotifNewNote(String token) {
+    public static void sendNotifNewNote(String token, String title, String category) {
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        JSONObject jsonNotif = new JSONObject();
+        JSONObject wholeObj = new JSONObject();
+
+        try {
+            jsonNotif.put("title", "New note " + title);
+            jsonNotif.put("body", "Category " + category + " with title " + title);
+            wholeObj.put("to", token);
+            wholeObj.put("notification", jsonNotif);
+
+        } catch (JSONException e) {
+            Log.d("FCM ERROR", e.toString());
+        }
+
+        RequestBody rBody = RequestBody.create(wholeObj.toString(), mediaType);
+        Request request = new Request.Builder()
+                .url(FCM_MESSAGE_URL)
+                .post(rBody)
+                .addHeader("Authorization", "key=" + Config.getFCM_SERVER_KEY())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+        } catch (IOException e) {
+            Log.d("FCM ERROR", e.toString());
+        }
 
     }
 }
