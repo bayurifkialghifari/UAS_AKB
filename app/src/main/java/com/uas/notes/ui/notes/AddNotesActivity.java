@@ -21,6 +21,7 @@ import com.uas.notes.Config;
 import com.uas.notes.MainActivity;
 import com.uas.notes.R;
 import com.uas.notes.helper.DBHelper;
+import com.uas.notes.helper.FCMHelper;
 
 public class AddNotesActivity extends AppCompatActivity {
 
@@ -68,6 +69,10 @@ public class AddNotesActivity extends AppCompatActivity {
             // Make alert
             Toast.makeText(AddNotesActivity.this, "Data created !",
                     Toast.LENGTH_SHORT).show();
+
+            // Make notification
+            String token = FCMHelper.getToken(this);
+            FCMHelper.sendNotifNewNote(token);
 
             if(this.previousActivity.compareTo("note_category") == 0) {
                 goToMainActivity();
