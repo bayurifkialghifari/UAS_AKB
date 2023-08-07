@@ -10,10 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +40,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText fPassword;
     private Button bSignin;
     private Button bSignup;
+    private Button getbSigninGoogle;
+    private GoogleSignInOptions gso;
+    private GoogleSignInClient gsc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +58,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fPassword = findViewById(R.id.login_password);
         bSignin = findViewById(R.id.login_submit_btn);
         bSignup = findViewById(R.id.login_signup_btn);
+        getbSigninGoogle = findViewById(R.id.login_google);
+
 
         // Btn on click action
         bSignup.setOnClickListener(this);
         bSignin.setOnClickListener(this);
+        getbSigninGoogle.setOnClickListener(this);
 
         // Check if user is logged in
         if (Auth.getCurrentUser() != null) {
@@ -72,6 +86,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             signIn();
         } else if (i == R.id.login_signup_btn) {
             signUp();
+        } else {
+            signInGoogle();
         }
     }
 
@@ -137,5 +153,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
+    private void signInGoogle() {
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this, gso);
 
+        Intent signInIntent = gsc.getSignInIntent();
+
+        startActivityForResult(signInIntent, 1000);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1000) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+            try {
+                task.getResult(ApiException.class);
+                navigateToSecondActivity();
+            } catch (ApiException e) {
+                Toast.makeText(getApplicationContext(), "Something wrong", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void navigateToSecondActivity() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
+    }
 }
